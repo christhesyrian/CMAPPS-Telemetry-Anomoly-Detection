@@ -1,5 +1,6 @@
 import argparse
 from cmapps_telemetry_anomaly_detection.data_ingestion.kaggle_data_import import download_dataset
+from cmapps_telemetry_anomaly_detection.data_preprocessing.data_preprocess import run_preprocessing
 
 def main():
     p = argparse.ArgumentParser(prog="cmapps-tad")
@@ -15,6 +16,8 @@ def main():
 
     sub.add_parser("train", help="Train anomaly model(s)")
     sub.add_parser("score", help="Score anomalies")
+    sub.add_parser("preprocess", help="Preprocess raw CMAPSS data")
+
 
     args = p.parse_args()
 
@@ -24,5 +27,9 @@ def main():
         print("TODO: train anomaly model")
     elif args.cmd == "score":
         print("TODO: score anomalies")
+    elif args.cmd is None:
+        print("No command provided. Use --help for usage information.")
+    elif args.cmd == "preprocess":
+        run_preprocessing()
     else:
         p.print_help()

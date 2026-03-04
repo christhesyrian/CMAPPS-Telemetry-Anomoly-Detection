@@ -7,8 +7,8 @@ Pipeline:
     data/raw/  ->  data/processed/
 
 Steps:
-    1. Load raw train + test files (space-separated, no header)
-    2. Assign column names
+    1. Load raw train + test files (space-separated, no header, txt files)
+    2. Assign column names (unit_id, cycle, op_settings, sensors)
     3. Drop constant / near-zero-variance sensors
     4. Compute RUL (Remaining Useful Life) for training data
     5. Create binary proxy anomaly labels (last N cycles = anomalous)
@@ -22,7 +22,6 @@ from pathlib import Path
 from sklearn.preprocessing import MinMaxScaler
 import joblib
 import yaml
-
 
 # ─────────────────────────────────────────────
 # CMAPSS column names (no header in raw files)
@@ -210,6 +209,7 @@ def run_preprocessing(config_path: str = "configs/data.yaml") -> None:
     train_df, test_df = scale_sensors(train_df, test_df, Path(scaler_path))
 
     # ── Save processed outputs ────────────────────────────────────────────────
+    # Saved as Parquet for efficient loading later 
     train_out = processed_path / f"train_{subset}.parquet"
     test_out  = processed_path / f"test_{subset}.parquet"
     rul_out   = processed_path / f"rul_{subset}.parquet"

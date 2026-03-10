@@ -19,7 +19,7 @@ models:
     n_estimators: 100
     contamination: 0.05
   pca_reconstruction:
-    n_components: 10
+    n_components: 15
     percentile: 95.0
 
 reports:
